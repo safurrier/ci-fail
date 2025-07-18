@@ -92,3 +92,8 @@ warn_unused_ignores = true
 warn_no_return = true
 warn_unreachable = true
 strict_equality = true
+
+[tool.pytest.ini_options]
+markers = [
+    "smoke: High-level system validation tests for critical paths",
+]
