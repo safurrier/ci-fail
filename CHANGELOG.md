@@ -8,28 +8,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Integration with uv for dependency management
-- Modern Python development tools:
+- Complete CI failure analysis CLI tool for GitHub + Buildkite workflows
+- Smart error detection and extraction from build logs
+- Comprehensive CI status overview with pass/fail counts
+- Multiple output formats (human-readable tables and JSON)
+- Modular architecture with proper separation of concerns:
+  - CLI interface (Click-based commands)
+  - API interactions (GitHub and Buildkite)
+  - Log analysis engine with regex-based error extraction
+  - Rich console output formatting
+  - Data models and configuration management
+- Comprehensive test suite with 38 test cases covering:
+  - CLI compatibility and integration
+  - Module structure validation
+  - Real-world integration testing
+- Modern Python development workflow:
+  - uv for dependency management
   - ruff for linting and formatting
   - mypy for type checking
   - pytest with coverage reporting
-- GitHub Actions workflow for automated testing
-- Docker development environment improvements
+  - Pre-commit hooks for quality gates
 
 ### Changed
-- Switched from pip/venv to uv for environment management
-- Updated example code to pass mypy type checking
-- Modernized project structure and development workflow
-- Updated Python version to 3.12
+- Refactored monolithic `cifail.py` script into modular package structure
+- Applied Test-Driven Development (TDD) approach with Red-Green-Refactor cycle
+- Improved cognitive load by extracting helper functions from complex methods
+- Fixed dependency conflicts in build system
+- Updated project documentation to reflect CI analysis tool purpose
 
 ### Removed
-- Legacy dependency management approach
-- Outdated Docker configuration elements
-
-### Fixed
-- Type hints in example code to pass mypy checks
-- Docker environment management
-- Development workflow and quality checks
+- Original monolithic `cifail.py` script
+- Template-specific code and documentation
 
 ## [0.1.0] - 2024-04-14
 - Initial fork from eugeneyan/python-collab-template

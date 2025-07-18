@@ -16,6 +16,7 @@ docker/.env
 .ruff_cache/*
 .aider*
 CLAUDE.md
+.bk.yaml
 
 # Documentation build artifacts
 site/
