@@ -4,7 +4,7 @@ import json
 import os
 import subprocess
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any, Optional, Union, cast
 
 from ci_fail.config import Config, Patterns
 from ci_fail.models import APIError, CommandNotFoundError, ValidationError
@@ -246,7 +246,7 @@ def parse_json_response(
         APIError: If JSON parsing fails
     """
     try:
-        return json.loads(response)
+        return cast(Union[dict[Any, Any], list[Any]], json.loads(response))
     except json.JSONDecodeError as e:
         raise APIError(f"Error parsing {context}: {e}")
 
@@ -263,7 +263,7 @@ def parse_log_response(response: str) -> str:
     try:
         log_data = json.loads(response)
         if isinstance(log_data, dict) and "content" in log_data:
-            return log_data["content"]
+            return cast(str, log_data["content"])
         return response
     except json.JSONDecodeError:
         return response
