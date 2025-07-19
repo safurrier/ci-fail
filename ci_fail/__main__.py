@@ -3,7 +3,7 @@
 import sys
 
 
-def main():
+def main() -> None:
     """Main entry point for the CLI."""
     try:
         # Import CLI here to avoid circular imports

@@ -1,7 +1,7 @@
 """Display and formatting functions for console output."""
 
 import os
-from typing import Optional
+from typing import Any, Optional
 
 from rich.console import Console
 from rich.panel import Panel
@@ -277,7 +277,7 @@ def format_jobs_human(
 
 def format_jobs_json(
     build_id: str, pipeline_slug: str, job_failures: list[JobFailure], detailed: bool
-) -> dict:
+) -> dict[str, Any]:
     """Format job failures as JSON output.
 
     Args:
@@ -291,7 +291,10 @@ def format_jobs_json(
     """
     jobs_data = []
     for job_failure in job_failures:
-        job_data = {"job_id": job_failure.job_id, "job_name": job_failure.job_name}
+        job_data: dict[str, Any] = {
+            "job_id": job_failure.job_id,
+            "job_name": job_failure.job_name,
+        }
 
         if detailed:
             details = get_job_details(build_id, job_failure.job_id, pipeline_slug)
@@ -314,7 +317,7 @@ def format_jobs_json(
 
 def _format_checks_json_output(
     status: ChecksStatus, pr_info: tuple[str, str, str]
-) -> dict:
+) -> dict[str, Any]:
     """Format checks status as JSON output.
 
     Args:

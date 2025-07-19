@@ -23,7 +23,13 @@ from ci_fail.display import (
     format_jobs_human,
     format_jobs_json,
 )
-from ci_fail.models import APIError, CommandNotFoundError, OutputFormat, ValidationError
+from ci_fail.models import (
+    APIError,
+    ChecksStatus,
+    CommandNotFoundError,
+    OutputFormat,
+    ValidationError,
+)
 from ci_fail.utils import (
     check_configuration_full,
     check_configuration_quick,
@@ -64,7 +70,7 @@ def parse_detail_numbers(detail_str: str) -> list[int]:
         )
 
 
-def _handle_specific_detail_request(status, detail: str) -> None:
+def _handle_specific_detail_request(status: ChecksStatus, detail: str) -> None:
     """Handle specific detail number requests.
 
     Args:
@@ -88,7 +94,7 @@ def _handle_specific_detail_request(status, detail: str) -> None:
 
 
 @click.group()
-def cli():
+def cli() -> None:
     """CI failure analysis tool for GitHub + Buildkite workflows.
 
     Note: Buildkite CLI may create .bk.yaml files - add to .gitignore.
@@ -167,7 +173,7 @@ def _post_configuration_setup(org: str) -> None:
 
 
 @cli.command()
-def configure():
+def configure() -> None:
     """Configure Buildkite CLI with authentication."""
     console.print("🔧 Configuring Buildkite CLI...", style="cyan")
 
@@ -203,7 +209,7 @@ def _validate_git_repository() -> bool:
     return True
 
 
-def _get_pr_info_with_validation():
+def _get_pr_info_with_validation() -> Optional[tuple[str, str, str]]:
     """Get PR info with user-friendly error handling."""
     pr_info = get_pr_info()
     if not pr_info:
@@ -214,7 +220,11 @@ def _get_pr_info_with_validation():
 
 
 def _handle_checks_output(
-    format_enum: OutputFormat, status, pr_info, detailed: bool, detail: Optional[str]
+    format_enum: OutputFormat,
+    status: ChecksStatus,
+    pr_info: tuple[str, str, str],
+    detailed: bool,
+    detail: Optional[str],
 ) -> None:
     """Handle output formatting for checks command."""
     if format_enum == OutputFormat.JSON:
@@ -252,7 +262,7 @@ def _handle_checks_output(
 @click.option(
     "--detail", help='Show details for specific failure numbers (e.g., "1" or "1,3")'
 )
-def checks(output_format: str, detailed: bool, detail: Optional[str]):
+def checks(output_format: str, detailed: bool, detail: Optional[str]) -> None:
     """Get CI checks status from GitHub PR.
 
     Examples:
@@ -306,7 +316,7 @@ def checks(output_format: str, detailed: bool, detail: Optional[str]):
 )
 def logs(
     build_id: str, detailed: bool, pipeline_slug: Optional[str], output_format: str
-):
+) -> None:
     """Get logs for a specific Buildkite build."""
     try:
         check_prerequisites()
@@ -384,7 +394,7 @@ def logs(
     default=OutputFormat.HUMAN.value,
     help="Output format",
 )
-def job(job_id: str, build_id: str, pipeline_slug: str, output_format: str):
+def job(job_id: str, build_id: str, pipeline_slug: str, output_format: str) -> None:
     """Get detailed information about a specific failed job."""
     try:
         check_prerequisites()

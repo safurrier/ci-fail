@@ -4,7 +4,7 @@ import json
 import os
 import subprocess
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional, Union
 
 from ci_fail.config import Config, Patterns
 from ci_fail.models import APIError, CommandNotFoundError, ValidationError
@@ -12,7 +12,7 @@ from ci_fail.models import APIError, CommandNotFoundError, ValidationError
 
 def run_command(
     cmd: list[str], capture_output: bool = True, timeout: int = Config.DEFAULT_TIMEOUT
-) -> subprocess.CompletedProcess:
+) -> subprocess.CompletedProcess[str]:
     """Run a command with error handling.
 
     Args:
@@ -142,7 +142,9 @@ def check_configuration_quick() -> None:
         )
 
 
-def validate_api_response(response_data: dict, required_fields: list[str]) -> bool:
+def validate_api_response(
+    response_data: dict[str, Any], required_fields: list[str]
+) -> bool:
     """Validate API response has required fields.
 
     Args:
@@ -210,7 +212,7 @@ def _parse_buildkite_url(url: str) -> tuple[str, str]:
     return match.group(2), match.group(1)  # build_id, pipeline_slug
 
 
-def handle_api_response(result: subprocess.CompletedProcess, context: str) -> str:
+def handle_api_response(result: subprocess.CompletedProcess[str], context: str) -> str:
     """Standard API response handler.
 
     Args:
@@ -228,7 +230,9 @@ def handle_api_response(result: subprocess.CompletedProcess, context: str) -> st
     return result.stdout
 
 
-def parse_json_response(response: str, context: str) -> dict | list:
+def parse_json_response(
+    response: str, context: str
+) -> Union[dict[Any, Any], list[Any]]:
     """Standard JSON response parser.
 
     Args:

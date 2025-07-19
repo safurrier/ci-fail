@@ -1,6 +1,6 @@
 """API interactions for GitHub and Buildkite."""
 
-from typing import Optional
+from typing import Any, Optional
 
 from ci_fail.analysis import analyze_logs
 from ci_fail.config import Patterns
@@ -58,7 +58,7 @@ def get_pr_number() -> Optional[str]:
 
 
 def _count_check_states(
-    checks: list[dict],
+    checks: list[dict[str, Any]],
 ) -> tuple[int, int, int, int, int, int, int, int]:
     """Count checks by state.
 
@@ -79,7 +79,7 @@ def _count_check_states(
     return running, passed, failed, neutral, cancelled, skipped, timed_out, buildkite
 
 
-def _extract_buildkite_failures(checks: list[dict]) -> list[BuildkiteFailure]:
+def _extract_buildkite_failures(checks: list[dict[str, Any]]) -> list[BuildkiteFailure]:
     """Extract Buildkite failures from checks.
 
     Args:
@@ -105,7 +105,9 @@ def _extract_buildkite_failures(checks: list[dict]) -> list[BuildkiteFailure]:
     return failures
 
 
-def _extract_buildkite_in_progress(checks: list[dict]) -> list[BuildkiteInProgress]:
+def _extract_buildkite_in_progress(
+    checks: list[dict[str, Any]],
+) -> list[BuildkiteInProgress]:
     """Extract in-progress Buildkite checks.
 
     Args:
@@ -242,7 +244,7 @@ def get_job_failures(build_id: str, pipeline_slug: str) -> list[JobFailure]:
         raise APIError(f"Error in get_job_failures: {e}")
 
 
-def get_job_details(build_id: str, job_id: str, pipeline_slug: str):
+def get_job_details(build_id: str, job_id: str, pipeline_slug: str) -> "JobFailure":
     """Get detailed failure information for a job.
 
     Args:

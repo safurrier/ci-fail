@@ -48,7 +48,7 @@ class Patterns:
     BUILDKITE_URL = re.compile(Config.BUILDKITE_URL_PATTERN)
 
     # Buildkite artifacts patterns
-    BK_ARTIFACTS: list[re.Pattern] = [
+    BK_ARTIFACTS: list[re.Pattern[str]] = [
         re.compile(r"^\s*\+\+\+\s*$"),  # +++ markers
         re.compile(r"^\s*---\s*$"),  # --- markers
         re.compile(r"^\s*~~~\s*$"),  # ~~~ markers
@@ -57,7 +57,7 @@ class Patterns:
     ]
 
     # Command detection patterns (in order of priority)
-    COMMAND_PATTERNS: list[re.Pattern] = [
+    COMMAND_PATTERNS: list[re.Pattern[str]] = [
         re.compile(r"^\+ (.+)$"),  # Standard + prefix (highest priority)
         re.compile(r"^\$ (.+)$"),  # $ prefix (shell commands)
         re.compile(
@@ -84,7 +84,7 @@ class Patterns:
     ]
 
     # Error detection patterns (in order of priority)
-    ERROR_PATTERNS: list[re.Pattern] = [
+    ERROR_PATTERNS: list[re.Pattern[str]] = [
         # Specific error patterns
         re.compile(r".*Error: (.+)", re.IGNORECASE),  # "Error: message"
         re.compile(
@@ -118,7 +118,7 @@ class Patterns:
     ]
 
     # Multi-line error patterns
-    MULTILINE_ERROR_PATTERNS: list[re.Pattern] = [
+    MULTILINE_ERROR_PATTERNS: list[re.Pattern[str]] = [
         re.compile(
             r"Traceback \(most recent call last\):", re.IGNORECASE
         ),  # Python stack traces
