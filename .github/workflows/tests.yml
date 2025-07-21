@@ -19,10 +19,8 @@ jobs:
         
       - name: Install dependencies
         run: |
-          uv pip compile pyproject.toml -o requirements.txt
-          uv pip compile pyproject.toml --extra dev -o requirements-dev.txt
           uv venv
-          uv pip sync requirements.txt requirements-dev.txt
+          uv sync --all-extras
           
       - name: Determine module name
         id: module

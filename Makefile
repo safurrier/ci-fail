@@ -14,9 +14,9 @@ PYTHON_VERSION ?= 3.12
 ensure-uv:  # Install uv if not present
 	@which uv > /dev/null || (curl -LsSf https://astral.sh/uv/install.sh | sh)
 
-setup: ensure-uv compile-deps ensure-scripts  # Install dependencies
+setup: ensure-uv ensure-scripts  # Install dependencies
 	UV_PYTHON_VERSION=$(PYTHON_VERSION) uv venv
-	UV_PYTHON_VERSION=$(PYTHON_VERSION) uv pip sync requirements.txt requirements-dev.txt
+	UV_PYTHON_VERSION=$(PYTHON_VERSION) uv sync --all-extras
 	$(MAKE) install-hooks
 
 install-hooks:  # Install pre-commit hooks if in a git repo with hooks configured
